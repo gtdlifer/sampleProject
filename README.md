@@ -1,1 +1,1 @@
-This repo include some sample projects.
+This repo includes some sample projects.

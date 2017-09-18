@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- springok1.xml -->
+<config>
+    <version>123456</version>
+    
+    <names>555555555</names>
+    <names>666666666</names>
+    <nameList>22222222222</nameList>
+    <nameList>33333333333</nameList>
+    
+    
+    <database>
+        <url>127.0.0.1</url>
+        <port>3306</port>
+        <login>admin</login>
+        <password></password> 
+    </database>
+    <databases>
+        <database>
+        <url>127.0.1.1</url>
+        <port>3306</port>
+        <login>admin</login>
+        <password></password>
+    </database>
+    <database>
+        <url>127.0.1.2</url>
+        <port>3306</port>
+        <login>admin</login>
+        <password></password>
+    </database>
+    </databases>
+    <databaseArr>
+        <database>
+        <url>127.0.2.1</url>
+        <port>3306</port>
+        <login>admin</login>
+        <password></password>
+    </database>
+    <database>
+        <url>127.0.2.2</url>
+        <port>3306</port>
+        <login>admin</login>
+        <password></password>
+    </database>
+    </databaseArr>
+    <users>
+        <user>
+         <name>张三</name>
+         <age>10</age>
+         <info>admin1</info>
+         <info>admin2</info>
+        </user>
+        <user>
+         <name>李四</name>
+         <age>10</age>
+         <info>admin1</info>
+         <info>admin2</info>
+        </user>
+    </users>
+</config>
