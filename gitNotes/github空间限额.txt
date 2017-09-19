@@ -1,0 +1,14 @@
+没有限制.推荐1G以内.达到1G以后会受到GITHUB的通知邮件.上传超过50M的单个文件会warning.无法上传超过100M的单个文件.目前大文件会提供一个1G的免费GIT-LFS空间.
+
+https://help.github.com/articles/what-is-my-disk-quota/
+What is my disk quota?
+GitHub doesn't have any set disk quotas. We try to provide abundant storage for all Git repositories, within reason. Keeping repositories small ensures that our servers are fast and downloads are quick for our users.
+
+Tip: If you regularly push large files to GitHub, consider introducing Git Large File Storage (Git LFS) as part of your workflow. Git LFS works well with the GitHub Flow and can be used with any large file, regardless of its type. For more information, see "Versioning large files."
+File and repository size limitations
+
+We recommend repositories be kept under 1GB each. This limit is easy to stay within if large files are kept out of the repository. If your repository exceeds 1GB, you might receive a polite email from GitHub Support requesting that you reduce the size of the repository to bring it back down.
+
+In addition, we place a strict limit of files exceeding 100 MB in size. For more information, see "Working with large files."
+
+Note: If you add a file to a repository via a browser, the file can be no larger than 25 MB. For more information, see "Adding a file to a repository".
