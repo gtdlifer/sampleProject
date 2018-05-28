@@ -155,7 +155,7 @@ public class AutoReloadXmlFileFactory<T> {
 				if (isBaseDataType(componentType)) {
 					configValue = config.getArray(componentType, key);
 				} else {
-					List list = new ArrayList();
+					List list = null;
 					int i = 0;
 					while (true) {
 						Object loadObj = loadObj(config,
@@ -164,10 +164,13 @@ public class AutoReloadXmlFileFactory<T> {
 						if (loadObj == null) {
 							break;
 						}
+						if(list==null) {
+							list = new ArrayList();
+						}
 						list.add(loadObj);
 						i++;
 					}
-					if (list.size() > 0) {
+					if (list!=null && list.size() > 0) {
 						Object array = Array.newInstance(componentType, list.size());
 						for (int j = 0; j < list.size(); j++) {
 							Array.set(array, j, list.get(j));
@@ -186,7 +189,7 @@ public class AutoReloadXmlFileFactory<T> {
 					if (isBaseDataType(genericClazz)) {
 						configValue = config.getCollection(genericClazz, key, null);
 					} else {
-						List list = new ArrayList();
+						List list = null;
 						int i = 0;
 						while (true) {
 							Object loadObj = loadObj(config,
@@ -194,6 +197,9 @@ public class AutoReloadXmlFileFactory<T> {
 									genericClazz);
 							if (loadObj == null) {
 								break;
+							}
+							if(list==null) {
+								list = new ArrayList();
 							}
 							list.add(loadObj);
 							i++;

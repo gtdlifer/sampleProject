@@ -1,0 +1,202 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.xiaowei.sample</groupId>
+  <artifactId>wxiaow-jmh-sample</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0</version>
+  <name>wxiaow-jmh-sample</name>
+  <url>http://maven.apache.org</url>
+ <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.version>9.4.7.v20170914</jetty.version>
+		<jersey.version>2.26</jersey.version><!-- 2.26-b03 -->
+		<jdk.version>1.8</jdk.version>
+		<junit.version>4.11</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<build.number>1</build.number>
+		<launch.class>com.hpe.mac.RunServer</launch.class>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.9</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- mapping entity -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<!-- scope>provided</scope -->
+		</dependency>
+		
+		
+	
+		<!-- benchmark -->
+		<dependency>
+		    <groupId>org.openjdk.jmh</groupId>
+		    <artifactId>jmh-core</artifactId>
+		    <version>1.20</version>
+		</dependency>
+
+		<dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <scope>provided</scope>
+             <version>1.20</version>
+        </dependency>
+        
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- download source code in Eclipse, best practice -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>false</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<!-- 打源码包 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+
+			<!-- copy依赖jar包 -->
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase> <!-- install -->
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- <includeScope>runtime</includeScope> -->
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<!-- 指定main方法，修改manifest文件,分成两个jar，一个procedure,一个是server -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>build-business-jar</id>
+						<phase>prepare-package</phase><!-- if package, the manifest is not 
+							modified -->
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<excludes>		
+								<!-- 将配置文件不打到jar包中 -->							
+								<exclude>**/*.properties</exclude>
+								<exclude>**/*.sql</exclude>
+								<exclude>**/*.xml</exclude>
+								<exclude>**/*.html</exclude>
+								<exclude>**/*.jsp</exclude>
+								<exclude>**/*.htm</exclude>				
+								<exclude>*client-config/**</exclude>
+								<exclude>*jetty-config/**</exclude>								
+							</excludes>
+							<archive>
+								<manifest>
+									<addClasspath>true</addClasspath>
+									<classpathPrefix>lib</classpathPrefix>
+									<mainClass>${launch.class}</mainClass>
+								</manifest>
+								<manifestEntries>
+									<Class-Path>conf/ classes/</Class-Path>
+								</manifestEntries>
+							</archive>
+							<finalName>${project.artifactId}-${project.version}</finalName>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>build-voltdb-procedure-jar</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<includes>
+								<include>com/hpe/cm/db/procedures/**/*</include>
+							</includes>
+							<finalName>${project.artifactId}-voltdb-procedure-${project.version}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 打压缩包 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>make-tar.gz</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.build.finalName}</finalName>
+							<skipAssembly>false</skipAssembly>
+							<descriptors>
+								<descriptor>tar.gz.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
