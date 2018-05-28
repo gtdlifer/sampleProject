@@ -1,0 +1,15 @@
+<request>
+<pap_pwd>aa&#160;bb&#160;&#160;</pap_pwd>
+  <login>ovotest01@zj</login>
+    <pap_pwd>aa&#160;bb&#160;&#160;</pap_pwd>
+	<!--pap_pwd>hp123400</pap_pwd-->
+    <nas_ip>61.174.64.130</nas_ip>
+    <nas_port>-1073741224</nas_port>
+    <trans_id>20121031-OK</trans_id>
+    <nas_port_type>15</nas_port_type>
+    <mac>00:00:00:00:00:1c</mac>
+    <vnet>0</vnet>
+    <vendor>4874</vendor>
+    <realm>zj</realm>
+    <request_type>access</request_type>
+</request>
